@@ -1,7 +1,7 @@
 package com.example.androidmoviesapplicationtest.di
 
-import com.example.androidmoviesapplicationtest.features.trendingMovies.data.repository.MovieListRepositoryImpl
-import com.example.androidmoviesapplicationtest.features.trendingMovies.domain.repository.MovieListRepository
+import com.example.androidmoviesapplicationtest.features.movies.data.repository.MovieListRepositoryImpl
+import com.example.androidmoviesapplicationtest.features.movies.domain.repository.MovieListRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

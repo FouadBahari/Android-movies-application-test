@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -21,15 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
+    tertiary = Pink80,
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
@@ -37,12 +30,34 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color.White,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
-    */
+    primaryContainer = Color(0xFF971C1C),
+    secondaryContainer = Color(0xFF831010),
+    error = Color(0xFFCF6679),
+    onError = Color(0xFF1C1C1C),
+)
+
+
+private val LightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40,
+    onBackground = Color(0xFFFFFBFE),
+    onSecondaryContainer = Color(0xFFFFFBFE),
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onTertiary = Color.Black,
+    background = Color(0xFF1C1B1F),
+    surface = Color(0xFF1C1B1F),
+    primaryContainer = Color(0xFF971C1C),
+    onSurface = Color(0xFF831010),
+    error = Color(0xFFE50914),
+    onError = Color.White,
+
 )
 
 @Composable
 fun AndroidMoviesApplication(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
 
     dynamicColor: Boolean = true,
 

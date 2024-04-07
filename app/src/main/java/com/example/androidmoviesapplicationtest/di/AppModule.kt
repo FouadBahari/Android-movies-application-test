@@ -3,11 +3,9 @@ package com.example.androidmoviesapplicationtest.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.room.Room
-import com.example.androidmoviesapplicationtest.features.trendingMovies.data.local.movie.MovieDatabase
-import com.example.androidmoviesapplicationtest.features.trendingMovies.data.remote.MovieApi
+import com.example.androidmoviesapplicationtest.features.movies.data.local.movie.MovieDatabase
+import com.example.androidmoviesapplicationtest.features.movies.data.remote.MovieApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

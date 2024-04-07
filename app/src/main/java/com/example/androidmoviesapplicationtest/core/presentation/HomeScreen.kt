@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Movie
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,9 +34,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.androidmoviesapplicationtest.R
-import com.example.androidmoviesapplicationtest.features.trendingMovies.presentaion.MovieListUiEvent
-import com.example.androidmoviesapplicationtest.features.trendingMovies.presentaion.MovieListViewModel
-import com.example.androidmoviesapplicationtest.features.trendingMovies.presentaion.TrendingMoviesScreen
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.MovieListUiEvent
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.MovieListViewModel
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.TrendingMoviesScreen
 
 import com.example.androidmoviesapplicationtest.core.util.Screen
 import com.example.androidmoviesapplicationtest.features.settings.SettingsDataStore
@@ -61,7 +62,7 @@ fun HomeScreen(navController: NavHostController,settingsDataStore: SettingsDataS
                     text = if (movieListState.isCurrentPopularScreen)
                         stringResource(R.string.trending_movies)
                     else
-                        stringResource(R.string.upcoming_movies),
+                        stringResource(R.string.settings),
                     fontSize = 20.sp
                 )
             },
@@ -108,7 +109,7 @@ fun BottomNavigationBar(
             icon = Icons.Rounded.Movie
         ), BottomItem(
             title = stringResource(R.string.settings),
-            icon = Icons.Rounded.Upcoming
+            icon = Icons.Rounded.Settings
         )
     )
 

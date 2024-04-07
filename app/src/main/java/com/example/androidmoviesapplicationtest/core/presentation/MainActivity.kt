@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.androidmoviesapplicationtest.features.movieDetails.peresntation.DetailsScreen
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.movieDetails.DetailsScreen
 import com.example.androidmoviesapplicationtest.core.util.Screen
 import com.example.androidmoviesapplicationtest.features.settings.SettingsDataStore
 import com.example.androidmoviesapplicationtest.ui.theme.AndroidMoviesApplication
