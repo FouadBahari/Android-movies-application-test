@@ -15,6 +15,7 @@ A movie app that displays trending movies, allows users to search for movies, sw
 ## Technologies Used
 
 - Jetpack Compose
+- Mvvm Architecture
 - Room for offline storage
 - Hilt for dependency injection
 - Retrofit for api requests
