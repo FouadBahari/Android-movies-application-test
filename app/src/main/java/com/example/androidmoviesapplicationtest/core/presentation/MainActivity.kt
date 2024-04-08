@@ -27,16 +27,20 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
 
+
+
     @Inject
     lateinit var settingsDataStore: SettingsDataStore
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AndroidMoviesApplication (
                 darkTheme = settingsDataStore.isDark.value
             ) {
                 SetBarColor(color = MaterialTheme.colorScheme.inverseOnSurface)
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -58,7 +62,7 @@ class MainActivity : ComponentActivity() {
                                 navArgument("movieId") { type = NavType.IntType }
                             )
                         ) { backStackEntry ->
-                            DetailsScreen()
+                            DetailsScreen(navController)
                         }
                     }
 

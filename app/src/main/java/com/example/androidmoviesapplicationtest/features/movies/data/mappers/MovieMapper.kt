@@ -43,7 +43,6 @@ fun MovieEntity.toMovie(
         id = id,
         adult = adult,
         original_title = original_title,
-
     )
 }
 

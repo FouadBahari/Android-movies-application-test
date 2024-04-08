@@ -75,6 +75,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("com.google.accompanist:accompanist-insets:0.17.0")
+
 
     //couroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

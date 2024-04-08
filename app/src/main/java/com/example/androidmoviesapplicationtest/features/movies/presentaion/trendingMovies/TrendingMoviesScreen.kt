@@ -1,5 +1,6 @@
 package com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,10 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.componentes.MovieItem
-import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.componentes.SearchBarView
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.widgets.MovieItem
+import com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.widgets.SearchBarView
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun TrendingMoviesScreen(
     movieListState: MovieListState,

@@ -1,8 +1,6 @@
-package com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.componentes
+package com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.widgets
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,23 +25,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -54,11 +45,8 @@ import com.example.androidmoviesapplicationtest.features.movies.data.remote.Movi
 import com.example.androidmoviesapplicationtest.features.movies.domain.model.Movie
 import com.example.androidmoviesapplicationtest.core.util.RatingBar
 import com.example.androidmoviesapplicationtest.core.util.Screen
-import com.example.androidmoviesapplicationtest.core.util.getAverageColor
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -120,21 +108,22 @@ fun MovieItem(
                     )
                 }
             }
-            // Badge for Release Year
             Box(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .padding(top = 12.dp)
+                    .clip(RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp))
                     .background(Color.Red)
                     ,
                 contentAlignment = Alignment.Center
             ) {
                 parseDateToYear(movie.release_date)?.let {
                     Text(
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         text = it,
                         color = Color.White,
                         fontSize = 12.sp
+
 
                     )
                 }

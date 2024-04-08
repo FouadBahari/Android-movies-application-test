@@ -13,18 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ImageNotSupported
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -42,8 +43,11 @@ import com.example.androidmoviesapplicationtest.features.movies.data.remote.Movi
 import com.example.androidmoviesapplicationtest.core.util.RatingBar
 
 
+
 @Composable
-fun DetailsScreen() {
+fun DetailsScreen(
+    navController: NavHostController
+) {
 
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val detailsState = detailsViewModel.detailsState.collectAsState().value
@@ -55,12 +59,7 @@ fun DetailsScreen() {
             .build()
     ).state
 
-    val posterImageState = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(MovieApi.IMAGE_BASE_URL + detailsState.movie?.poster_path)
-            .size(Size.ORIGINAL)
-            .build()
-    ).state
+
 
     Column(
         modifier = Modifier
@@ -75,23 +74,59 @@ fun DetailsScreen() {
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
+
                 Icon(
                     modifier = Modifier.size(70.dp),
                     imageVector = Icons.Rounded.ImageNotSupported,
                     contentDescription = detailsState.movie?.title
                 )
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(top = 12.dp),
+                    onClick = {
+                        navController.popBackStack()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
         }
 
         if (backDropImageState is AsyncImagePainter.State.Success) {
-            Image(
+
+            Box (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp),
-                painter = backDropImageState.painter,
-                contentDescription = detailsState.movie?.title,
-                contentScale = ContentScale.Crop
-            )
+                    .height(220.dp)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp),
+                    painter = backDropImageState.painter,
+                    contentDescription = detailsState.movie?.title,
+                    contentScale = ContentScale.Crop
+                )
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(top = 12.dp),
+                    onClick = {
+                        navController.popBackStack()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -115,15 +150,21 @@ fun DetailsScreen() {
                 ) {
                     RatingBar(
                         starsModifier = Modifier.size(18.dp),
-                        rating = movie.vote_average / 2
+                        rating = movie.vote_average / 2,
+                        starsColor = Color.Yellow
                     )
 
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
                         text = movie.vote_average.toString().take(3),
-                        color = Color.LightGray,
                         fontSize = 14.sp,
                         maxLines = 1,
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Text(
+                        modifier = Modifier.padding(start = 16.dp),
+                        text = "(${ movie.vote_count.toString() + stringResource(R.string.votes)})"
                     )
                 }
 
@@ -140,13 +181,6 @@ fun DetailsScreen() {
                     modifier = Modifier.padding(start = 16.dp),
                     text = stringResource(R.string.release_date) + movie.release_date
                 )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = movie.vote_count.toString() + stringResource(R.string.votes)
-                )
             }
         }
 
@@ -155,7 +189,7 @@ fun DetailsScreen() {
 
         Text(
             modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(R.string.overview),
+            text = stringResource(R.string.description),
             fontSize = 19.sp,
             fontWeight = FontWeight.SemiBold
         )

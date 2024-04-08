@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.TrendingUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,22 +55,6 @@ fun HomeScreen(navController: NavHostController,settingsDataStore: SettingsDataS
         BottomNavigationBar(
             bottomNavController = bottomNavController, onEvent = movieListViewModel::onEvent
         )
-    }, topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = if (movieListState.isCurrentTrendingScreen)
-                        stringResource(R.string.trending_movies)
-                    else
-                        stringResource(R.string.settings),
-                    fontSize = 20.sp
-                )
-            },
-            modifier = Modifier.shadow(2.dp),
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                MaterialTheme.colorScheme.inverseOnSurface
-            )
-        )
     }) {
         Box(
             modifier = Modifier
@@ -105,7 +90,7 @@ fun BottomNavigationBar(
     val items = listOf(
         BottomItem(
             title = stringResource(R.string.trending),
-            icon = Icons.Rounded.Movie
+            icon = Icons.Rounded.TrendingUp
         ), BottomItem(
             title = stringResource(R.string.settings),
             icon = Icons.Rounded.Settings
