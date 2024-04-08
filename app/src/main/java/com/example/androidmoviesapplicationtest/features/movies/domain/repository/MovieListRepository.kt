@@ -10,6 +10,10 @@ interface MovieListRepository {
         forceFetchFromRemote: Boolean,
         page: Int
     ): Flow<Resource<List<Movie>>>
+    suspend fun searchMovieList(
+        forceFetchFromRemote: Boolean,
+        query: String
+    ): Flow<Resource<List<Movie>>>
 
     suspend fun getMovie(
         id: Int): Flow<Resource<Movie>>

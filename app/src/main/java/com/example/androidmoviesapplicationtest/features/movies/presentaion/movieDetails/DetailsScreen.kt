@@ -96,98 +96,60 @@ fun DetailsScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .width(160.dp)
-                    .height(240.dp)
+        detailsState.movie?.let { movie ->
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                if (posterImageState is AsyncImagePainter.State.Error) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.primaryContainer),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(70.dp),
-                            imageVector = Icons.Rounded.ImageNotSupported,
-                            contentDescription = detailsState.movie?.title
-                        )
-                    }
-                }
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = movie.title,
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
 
-                if (posterImageState is AsyncImagePainter.State.Success) {
-                    Image(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(12.dp)),
-                        painter = posterImageState.painter,
-                        contentDescription = detailsState.movie?.title,
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+                Spacer(modifier = Modifier.height(16.dp))
 
-            detailsState.movie?.let { movie ->
-                Column(
-                    modifier = Modifier.fillMaxWidth()
+                Row(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
                 ) {
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = movie.title,
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.SemiBold
+                    RatingBar(
+                        starsModifier = Modifier.size(18.dp),
+                        rating = movie.vote_average / 2
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                    ) {
-                        RatingBar(
-                            starsModifier = Modifier.size(18.dp),
-                            rating = movie.vote_average / 2
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(start = 4.dp),
-                            text = movie.vote_average.toString().take(3),
-                            color = Color.LightGray,
-                            fontSize = 14.sp,
-                            maxLines = 1,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
                     Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = stringResource(R.string.language) + movie.original_language
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = stringResource(R.string.release_date) + movie.release_date
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = movie.release_date + stringResource(R.string.votes)
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = movie.vote_average.toString().take(3),
+                        color = Color.LightGray,
+                        fontSize = 14.sp,
+                        maxLines = 1,
                     )
                 }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = stringResource(R.string.language) + movie.original_language
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = stringResource(R.string.release_date) + movie.release_date
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = movie.vote_count.toString() + stringResource(R.string.votes)
+                )
             }
         }
+
 
         Spacer(modifier = Modifier.height(32.dp))
 

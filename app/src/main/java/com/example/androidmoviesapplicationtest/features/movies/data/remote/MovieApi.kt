@@ -16,6 +16,13 @@ interface MovieApi {
         @Query("api_key") apiKey: String = API_KEY
     ): MovieListDto
 
+    @GET("search/movie")
+    suspend fun searchMoviesList(
+        @Query("query") query: String,
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("api_key") apiKey: String = API_KEY
+    ): MovieListDto
+
     @GET("movie/{id}")
     suspend fun getMoviesDetails(
         @Path(value = "id", encoded = false) id: Int,

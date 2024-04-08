@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -59,7 +58,7 @@ fun HomeScreen(navController: NavHostController,settingsDataStore: SettingsDataS
         TopAppBar(
             title = {
                 Text(
-                    text = if (movieListState.isCurrentPopularScreen)
+                    text = if (movieListState.isCurrentTrendingScreen)
                         stringResource(R.string.trending_movies)
                     else
                         stringResource(R.string.settings),

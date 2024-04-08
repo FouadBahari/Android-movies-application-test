@@ -21,6 +21,9 @@ class MovieListViewModel @Inject constructor(
     private var _movieListState = MutableStateFlow(MovieListState())
     val movieListState = _movieListState.asStateFlow()
 
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
     init {
         getTrendingMovieList(false)
     }
@@ -31,52 +34,93 @@ class MovieListViewModel @Inject constructor(
                     getTrendingMovieList(true)
             }
 
+            is MovieListUiEvent.Search -> {
+                getTrendingMovieList(false,event.query)
+            }
+
             MovieListUiEvent.Navigate -> {
                 _movieListState.update {
                     it.copy(
-                        isCurrentPopularScreen = !movieListState.value.isCurrentPopularScreen
+                        isCurrentTrendingScreen = !movieListState.value.isCurrentTrendingScreen
                     )
                 }
             }
         }
     }
 
-    private fun getTrendingMovieList(forceFetchFromRemote: Boolean) {
+    fun onSearchTextChange(query: String) {
+        _searchText.value = query
+    }
+    private fun getTrendingMovieList(forceFetchFromRemote: Boolean,query: String? = "") {
         viewModelScope.launch {
             _movieListState.update {
                 it.copy(isLoading = true)
             }
 
-            movieListRepository.getMovieList(
-                forceFetchFromRemote,
-                movieListState.value.trendingMovieListPage
-            ).collectLatest { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        _movieListState.update {
-                            it.copy(isLoading = false)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        result.data?.let { popularList ->
+            if (query != null && query.isEmpty()) {
+                movieListRepository.getMovieList(
+                    forceFetchFromRemote,
+                    movieListState.value.trendingMovieListPage
+                ).collectLatest { result ->
+                    when (result) {
+                        is Resource.Error -> {
                             _movieListState.update {
-                                it.copy(
-                                    trendingMovieList = movieListState.value.trendingMovieList
-                                            + popularList.shuffled(),
-                                    trendingMovieListPage = movieListState.value.trendingMovieListPage + 1
-                                )
+                                it.copy(isLoading = false)
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            result.data?.let { trendingList ->
+                                _movieListState.update {
+                                    it.copy(
+                                        trendingMovieList = movieListState.value.trendingMovieList
+                                                + trendingList.shuffled(),
+                                        trendingMovieListPage = movieListState.value.trendingMovieListPage + 1
+                                    )
+                                }
+                            }
+                        }
+
+                        is Resource.Loading -> {
+                            _movieListState.update {
+                                it.copy(isLoading = result.isLoading)
                             }
                         }
                     }
+                }
+            }else{
+                if (query != null) {
+                    movieListRepository.searchMovieList(
+                        forceFetchFromRemote,
+                        query
+                    ).collectLatest { result ->
+                        when (result) {
+                            is Resource.Error -> {
+                                _movieListState.update {
+                                    it.copy(isLoading = false)
+                                }
+                            }
 
-                    is Resource.Loading -> {
-                        _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
+                            is Resource.Success -> {
+                                result.data?.let { trendingList ->
+                                    _movieListState.update {
+                                        it.copy(
+                                            trendingMovieList = trendingList,
+                                        )
+                                    }
+                                }
+                            }
+
+                            is Resource.Loading -> {
+                                _movieListState.update {
+                                    it.copy(isLoading = result.isLoading)
+                                }
+                            }
                         }
                     }
                 }
             }
+
         }
     }
 

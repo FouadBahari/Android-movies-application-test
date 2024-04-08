@@ -6,6 +6,6 @@ import com.example.androidmoviesapplicationtest.features.movies.domain.model.Mov
 data class MovieListState(
     val isLoading: Boolean = false,
     val trendingMovieListPage: Int = 1,
-    val isCurrentPopularScreen: Boolean = true,
+    val isCurrentTrendingScreen: Boolean = true,
     val trendingMovieList: List<Movie> = emptyList(),
 )

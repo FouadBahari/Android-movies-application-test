@@ -77,6 +77,62 @@ class MovieListRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun searchMovieList(
+        forceFetchFromRemote: Boolean,
+        query: String
+    ): Flow<Resource<List<Movie>>>{
+        return flow {
+
+            emit(Resource.Loading(true))
+
+            val localMovieList = movieDatabase.movieDao.searchMovies(query)
+
+            val shouldLoadLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
+
+            if (shouldLoadLocalMovie) {
+                emit(
+                    Resource.Success(
+                        data = localMovieList.map { movieEntity ->
+                            movieEntity.toMovie()
+                        }
+                    ))
+
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val movieListFromApi = try {
+                movieApi.searchMoviesList(query)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading movies"))
+                return@flow
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading movies"))
+                return@flow
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading movies"))
+                return@flow
+            }
+
+            val movieEntities = movieListFromApi.results.let {
+                it.map { movieDto ->
+                    movieDto.toMovieEntity()
+                }
+            }
+
+            movieDatabase.movieDao.upsertMovieList(movieEntities)
+
+            emit(
+                Resource.Success(
+                    movieEntities.map { it.toMovie() }
+                ))
+            emit(Resource.Loading(false))
+
+        }
+    }
     override suspend fun getMovie(
         id: Int): Flow<Resource<Movie>> {
         return flow {

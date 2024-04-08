@@ -1,5 +1,8 @@
 package com.example.androidmoviesapplicationtest.features.movies.presentaion.trendingMovies.componentes
 
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -51,6 +56,9 @@ import com.example.androidmoviesapplicationtest.core.util.RatingBar
 import com.example.androidmoviesapplicationtest.core.util.Screen
 import com.example.androidmoviesapplicationtest.core.util.getAverageColor
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -60,7 +68,7 @@ fun MovieItem(
 ) {
     val imageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(MovieApi.IMAGE_BASE_URL + movie.backdrop_path)
+            .data(MovieApi.IMAGE_BASE_URL + movie.poster_path)
             .size(Size.ORIGINAL)
             .build()
     ).state
@@ -91,7 +99,7 @@ fun MovieItem(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
+                .height(200.dp)
         ) {
             if (imageState is AsyncImagePainter.State.Error) {
                 Icon(
@@ -118,56 +126,83 @@ fun MovieItem(
                     .align(Alignment.TopStart)
                     .padding(8.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color.Red),
+                    .background(Color.Red)
+                    ,
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = movie.release_date.substring(0, 4),
-                    color = Color.White,
-                    fontSize = 12.sp
+                parseDateToYear(movie.release_date)?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 12.sp
 
-                )
+                    )
+                }
             }
+
+            Box(
+                modifier = Modifier
+                    .height(50.dp)
+                    .align(Alignment.BottomCenter)
+                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+            ) {
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                ){
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .fillMaxWidth(),
+                        text = movie.title,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    // Rating
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RatingBar(
+                            modifier = Modifier.size(18.dp),
+                            rating = movie.vote_average / 2
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = DecimalFormat("#.#").format(movie.vote_average),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = 12.sp,
+                            maxLines = 1
+                        )
+                    }
+                }
+
+            }
+
         }
 
-
-
-        // Title
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .fillMaxWidth(),
-            text = movie.title,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        // Rating
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            RatingBar(
-                modifier = Modifier.size(18.dp),
-                rating = movie.vote_average / 2
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = DecimalFormat("#.#").format(movie.vote_average),
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 12.sp,
-                maxLines = 1
-            )
-        }
     }
+
+
 }
 
+@SuppressLint("SimpleDateFormat")
+fun parseDateToYear(dateStr: String): String? {
+    return try {
+        val date = SimpleDateFormat("yyyy").parse(dateStr)
+        SimpleDateFormat("yyyy").format(date)
 
+    } catch (e: Exception) {
+        println("Invalid date format: $dateStr")
+        null
+    }
+}
 
 
 

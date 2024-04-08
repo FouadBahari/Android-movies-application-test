@@ -3,6 +3,7 @@ package com.example.androidmoviesapplicationtest.features.movies.presentaion.tre
 
 sealed interface MovieListUiEvent {
     object Paginate : MovieListUiEvent
+    data class Search(val query: String) : MovieListUiEvent
     object Navigate : MovieListUiEvent
 
 }
