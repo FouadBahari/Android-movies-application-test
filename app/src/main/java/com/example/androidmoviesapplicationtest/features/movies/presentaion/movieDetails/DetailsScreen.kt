@@ -142,17 +142,17 @@ fun DetailsScreen(
                     .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
             ){
                 detailsState.movie?.let {
-                    movie ->
+                        movie ->
                     Column (
                         modifier = Modifier
                             .fillMaxSize()
                             .align(Alignment.BottomStart)
-                            .padding(20.dp)
+                            .padding(10.dp)
 
                     ){
                         Text(
                             text = movie.title ?: "",
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -164,12 +164,12 @@ fun DetailsScreen(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = movie.vote_average.toString().take(3) ,
-                                fontSize = 16.sp,
+                                fontSize = 12.sp,
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "(${movie.vote_count} ${stringResource(id = R.string.votes)})",
-                                fontSize = 14.sp,
+                                fontSize = 12.sp,
                             )
                         }
 
