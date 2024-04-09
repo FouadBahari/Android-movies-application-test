@@ -25,10 +25,11 @@ A movie app that displays trending movies, allows users to search for movies, sw
 ## Screenshots
 <div>
   <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/30c1659c-eb58-4cca-a4b9-2c69d97542f6" width="200" />
-  <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/d96a2c45-6abc-4514-8965-645bc9627449" width="200" />
+  <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/9bf68e54-dada-4cc6-a9d0-1076ed651fd4" width="200" />
   <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/bad86289-4c1e-486b-823f-a5df8a141833" width="200" />
-   <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/f89c0407-a8c6-43d8-ae84-2c7c6a79a368" width="200" />
-   <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/3ce0bcd3-9c3f-41f4-b445-a523beef2847" width="200" />
+  <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/f89c0407-a8c6-43d8-ae84-2c7c6a79a368" width="200" />
+  <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/25a2d509-d712-4a72-a107-77ed1e18b984" width="200" />
+
 </div>
 
 
