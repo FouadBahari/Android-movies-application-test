@@ -3,7 +3,7 @@
 A movie app that displays trending movies, allows users to search for movies, switch between dark and light themes, and works both online and offline. This app fetches movie data from [The Movie Database (TMDb) API](https://www.themoviedb.org/documentation/api).
 
   <img src="https://github.com/FouadBahari/Android-movies-application-test/assets/63747680/600e3f08-6240-4d31-a202-02ac758215c4" width="200" />
-
+  
 ## Features
 
 - View trending movies on the main screen
