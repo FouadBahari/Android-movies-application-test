@@ -13,10 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ImageNotSupported
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,7 +51,6 @@ import com.example.androidmoviesapplicationtest.core.util.RatingBar
 fun DetailsScreen(
     navController: NavHostController
 ) {
-
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val detailsState = detailsViewModel.detailsState.collectAsState().value
 
@@ -59,163 +61,173 @@ fun DetailsScreen(
             .build()
     ).state
 
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        if (backDropImageState is AsyncImagePainter.State.Error) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-
-                Icon(
-                    modifier = Modifier.size(70.dp),
-                    imageVector = Icons.Rounded.ImageNotSupported,
-                    contentDescription = detailsState.movie?.title
-                )
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 12.dp),
-                    onClick = {
-                        navController.popBackStack()
-                    }) {
-                    Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-        }
-
-        if (backDropImageState is AsyncImagePainter.State.Success) {
-
-            Box (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(220.dp)
+                .background(Color.Black),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            if (backDropImageState is AsyncImagePainter.State.Error) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(220.dp),
-                    painter = backDropImageState.painter,
-                    contentDescription = detailsState.movie?.title,
-                    contentScale = ContentScale.Crop
-                )
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 12.dp),
-                    onClick = {
-                        navController.popBackStack()
-                    }) {
+                        .height(220.dp)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+
                     Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        modifier = Modifier.size(70.dp),
+                        imageVector = Icons.Rounded.ImageNotSupported,
+                        contentDescription = detailsState.movie?.title
                     )
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(top = 12.dp),
+                        onClick = {
+                            navController.popBackStack()
+                        }) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 }
             }
+
+            if (backDropImageState is AsyncImagePainter.State.Success) {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = backDropImageState.painter,
+                        contentDescription = detailsState.movie?.title ?: "",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(top = 16.dp, start = 16.dp),
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .height(80.dp)
+                    .align(Alignment.BottomCenter)
+                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+            ){
+                detailsState.movie?.let {
+                    movie ->
+                    Column (
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.BottomStart)
+                            .padding(20.dp)
+
+                    ){
+                        Text(
+                            text = movie.title ?: "",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            RatingBar(
+                                starsModifier = Modifier.size(18.dp),
+                                rating = movie.vote_average / 2,
+                                starsColor = Color.Yellow
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = movie.vote_average.toString().take(3) ,
+                                fontSize = 16.sp,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "(${movie.vote_count} ${stringResource(id = R.string.votes)})",
+                                fontSize = 14.sp,
+                            )
+                        }
+
+                    }
+                }
+            }
+
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        detailsState.movie?.let { movie ->
-            Column(
-                modifier = Modifier.fillMaxWidth()
+        detailsState.movie?.let{movie ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = movie.title,
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
+                Column(
                     modifier = Modifier
-                        .padding(start = 16.dp)
+                        .padding(16.dp)
+                        .fillMaxWidth()
                 ) {
-                    RatingBar(
-                        starsModifier = Modifier.size(18.dp),
-                        rating = movie.vote_average / 2,
-                        starsColor = Color.Yellow
-                    )
 
                     Text(
-                        modifier = Modifier.padding(start = 4.dp),
-                        text = movie.vote_average.toString().take(3),
+                        text = stringResource(id = R.string.language) + movie.original_language,
                         fontSize = 14.sp,
-                        maxLines = 1,
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = "(${ movie.vote_count.toString() + stringResource(R.string.votes)})"
+                        text = stringResource(id = R.string.release_date) + movie.release_date,
+                        fontSize = 14.sp,
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Description
+                    Text(
+                        text = stringResource(id = R.string.description),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = movie.overview ?: "",
+                        fontSize = 16.sp,
                     )
                 }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(R.string.language) + movie.original_language
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(R.string.release_date) + movie.release_date
-                )
             }
         }
 
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(R.string.description),
-            fontSize = 19.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        detailsState.movie?.let {
-            Text(
-                modifier = Modifier.padding(start = 16.dp),
-                text = it.overview,
-                fontSize = 16.sp,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-
     }
-
 }
-
-
-
-
-
-
 
 
 
